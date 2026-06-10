@@ -75,9 +75,24 @@ async function intronTTSChunk(
   await playUrl(audioUrl);
 }
 
+// Playback management — lets a new utterance cancel an in-flight one
+let currentAudio: HTMLAudioElement | null = null;
+let generation = 0;
+
+export function stopCloudTTS() {
+  generation++;
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio = null;
+  }
+}
+
+export const hasCloudTTS = Boolean(INTRON_API_KEY);
+
 function playUrl(url: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const audio = new Audio(url);
+    currentAudio = audio;
     audio.onended = () => resolve();
     audio.onerror = (e) => reject(e);
     audio.play().catch(reject);
@@ -102,8 +117,10 @@ export async function cloudTTS(text: string, lang: 'sw' | 'en' = 'sw'): Promise<
 
   // --- Intron Health Sahara-v2 ---
   if (INTRON_API_KEY) {
+    const myGeneration = ++generation;
     const chunks = splitForIntron(text);
     for (const chunk of chunks) {
+      if (myGeneration !== generation) return; // superseded by a newer utterance
       await intronTTSChunk(chunk, lang); // sequential — plays each chunk before fetching next
     }
     return;

@@ -27,6 +27,18 @@ const LOCAL_WASM_PATHS = {
 
 let _session: TtsSession | null = null;
 
+// Playback management — lets a new utterance cancel an in-flight one
+let currentAudio: HTMLAudioElement | null = null;
+let generation = 0;
+
+export function stopWasmTTS() {
+  generation++;
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio = null;
+  }
+}
+
 async function getSession(onProgress?: (p: Progress) => void): Promise<TtsSession> {
   if (_session?.ready) return _session;
   _session = await TtsSession.create({
@@ -47,13 +59,15 @@ export async function wasmTTS(
   _lang: 'sw' | 'en' = 'sw',
   onProgress?: (p: Progress) => void,
 ): Promise<void> {
+  const myGeneration = ++generation;
   try {
     const session = await getSession(onProgress);
     const wav = await session.predict(text);
+    if (myGeneration !== generation) return; // superseded by a newer utterance
     await playBlob(wav);
   } catch (err) {
     console.warn('[piper] inference failed, falling back to Web Speech:', err);
-    await webSpeechFallback(text);
+    if (myGeneration === generation) await webSpeechFallback(text);
   }
 }
 
@@ -79,6 +93,7 @@ function playBlob(blob: Blob): Promise<void> {
   return new Promise((resolve, reject) => {
     const url = URL.createObjectURL(blob);
     const audio = new Audio(url);
+    currentAudio = audio;
     audio.onended = () => { URL.revokeObjectURL(url); resolve(); };
     audio.onerror = (e) => { URL.revokeObjectURL(url); reject(e); };
     audio.play().catch(reject);
