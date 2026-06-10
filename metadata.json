@@ -1,0 +1,6 @@
+{
+  "name": "Inclusive Learning Platform",
+  "description": "An interactive support system for primary school inclusive education. Offers accessible literacy and numeracy interfaces for students, inclusive training resources and visual tracking for educators, and practical at-home guidelines and peer networks for caregivers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

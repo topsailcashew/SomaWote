@@ -1,0 +1,14 @@
+{
+  "name": "SomaWote — Jifunze Kila Wakati",
+  "short_name": "SomaWote",
+  "description": "Elimu ya msingi kwa wanafunzi wenye mahitaji maalum Tanzania",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FDFCF0",
+  "theme_color": "#4A90E2",
+  "lang": "sw",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

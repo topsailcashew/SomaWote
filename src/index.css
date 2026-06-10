@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Lexend:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --font-dyslexic: "Lexend", sans-serif;
+
+  /* Soft Pastel Palette for sensory comfort (Autism / ADHD friendly) */
+  --color-pastel-slate: #f1f5f9;
+  --color-pastel-blue: #e0f2fe;
+  --color-pastel-green: #dcfce7;
+  --color-pastel-yellow: #fef9c3;
+  --color-pastel-pink: #fce7f3;
+  --color-pastel-orange: #ffedd5;
+  --color-pastel-purple: #f3e8ff;
+  --color-pastel-text: #1e293b;
+
+  /* Vibrant Palette Theme Colors */
+  --color-vib-bg: #FDFCF0;
+  --color-vib-charcoal: #2D3436;
+  --color-vib-yellow: #FFD93D;
+  --color-vib-blue: #4A90E2;
+  --color-vib-blue-dark: #1B4E8C;
+  --color-vib-green: #6BCB77;
+  --color-vib-green-dark: #388E3C;
+  --color-vib-red: #FF6B6B;
+  --color-vib-red-dark: #B91C1C;
+}
+
+/* Base modifications for global reading accessibility */
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  background-color: #FDFCF0;
+}
+
+/* Dyslexia reading guide line selector */
+.reading-guide-line {
+  pointer-events: none;
+  background: rgba(254, 240, 138, 0.45); /* Highlight color */
+  mix-blend-mode: multiply;
+  box-shadow: 0 0 10px rgba(254, 240, 138, 0.6);
+  z-index: 9999;
+}
+
+/* Utility classes to easily toggle fonts */
+.font-dyslexic {
+  font-family: "Lexend", sans-serif;
+}
+
+/* Playful Neo-Brutalist Chunky Cards */
+.nb-card {
+  background-color: white;
+  border: 4px solid #2D3436;
+  border-radius: 24px;
+}
+
+/* Neo brutalist button bounce effects */
+.nb-btn-active {
+  transition: all 0.1s ease;
+}
+
+.nb-btn-active:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px #2D3436;
+}
