@@ -98,6 +98,10 @@ const translations = {
     sw: 'Msomaji wa sauti umewashwa. Sogesha au gonga vichwa vya kadi kuvisikiliza!',
   },
   tts_voice_off:        { en: 'Audio voice deactivated',               sw: 'Msomaji wa sauti umezimwa' },
+  tts_voice_auto:       { en: 'Voice: Auto',                           sw: 'Sauti: Otomatiki' },
+  tts_voice_cloud:      { en: 'Voice: Cloud (Intron)',                 sw: 'Sauti: Wingu (Intron)' },
+  tts_voice_wasm:       { en: 'Voice: On-device (Piper)',              sw: 'Sauti: Kifaani (Piper)' },
+  tts_voice_browser:    { en: 'Voice: Browser',                       sw: 'Sauti: Kivinjari' },
   tts_ruler_on:         {
     en: 'Reading guide ruler active. Use your cursor to guide your reading eyes!',
     sw: 'Mstari wa kusoma umewashwa. Tumia kishale chako kuongoza macho yako ya kusoma!',

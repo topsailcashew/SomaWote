@@ -7,10 +7,15 @@ import { cloudTTS, stopCloudTTS, hasCloudTTS } from './cloudVoice';
 import { wasmTTS, stopWasmTTS } from './wasmVoice';
 
 let speechMuted = false;
+let activeVoiceMode: 'auto' | 'cloud' | 'wasm' | 'browser' = 'auto';
 
 // Circuit breaker: once Intron rejects (e.g. 403 non-integrator account),
 // stop trying it for the rest of the session and go straight to Piper.
 let cloudBroken = false;
+
+export function setVoiceMode(mode: 'auto' | 'cloud' | 'wasm' | 'browser') {
+  activeVoiceMode = mode;
+}
 
 // Android WebView crashes on utterances longer than ~14 seconds of speech.
 // At rate 1.0, ~150 words/min ≈ 2.5 words/sec, so ~35 words per chunk is safe.
@@ -90,11 +95,28 @@ export function speakText(
     const cleanText = text.replace(/<[^>]*>/g, '').trim();
     if (!cleanText) return;
 
-    // Swahili: no browser ships a native Swahili voice, so Web Speech sounds
-    // wrong. Try Intron Sahara-v2 (cloud) → Piper sw_CD (on-device WASM) →
-    // Web Speech as last resort.
     if (lang === 'sw') {
       stopWasmTTS();
+
+      if (activeVoiceMode === 'cloud') {
+        cloudTTS(cleanText, 'sw').catch((e) => {
+          console.warn('Cloud TTS failed:', e);
+          cloudBroken = true;
+        });
+        return;
+      }
+
+      if (activeVoiceMode === 'wasm') {
+        wasmTTS(cleanText, 'sw');
+        return;
+      }
+
+      if (activeVoiceMode === 'browser') {
+        speakWebSpeech(cleanText, rate, lang);
+        return;
+      }
+
+      // auto: Intron cloud → Piper WASM → Web Speech
       if (hasCloudTTS && navigator.onLine && !cloudBroken) {
         cloudTTS(cleanText, 'sw').catch((e) => {
           console.warn('Cloud TTS failed, switching to on-device Piper voice:', e);
@@ -102,7 +124,7 @@ export function speakText(
           wasmTTS(cleanText, 'sw');
         });
       } else {
-        wasmTTS(cleanText, 'sw'); // falls back to Web Speech internally on failure
+        wasmTTS(cleanText, 'sw');
       }
       return;
     }

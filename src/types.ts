@@ -11,6 +11,7 @@ export interface AccessibilityConfig {
   contrastMode: 'normal' | 'high-contrast-light' | 'high-contrast-dark' | 'soft-pastel';
   ttsEnabled: boolean;
   ttsSpeed: number; // 0.75, 1, 1.25, 1.5
+  ttsVoice: 'auto' | 'cloud' | 'wasm' | 'browser';
   readingGuide: boolean;
   lang: 'en' | 'sw';
 }

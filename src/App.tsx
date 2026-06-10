@@ -11,7 +11,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { AccessibilityConfig, Role } from './types';
-import { speakText, stopSpeaking, toggleSpeechMute } from './modules/voice/tts';
+import { speakText, stopSpeaking, toggleSpeechMute, setVoiceMode } from './modules/voice/tts';
 import AccessibilityToolbar from './components/accessibility/AccessibilityToolbar';
 import VoiceModelDownload from './components/voice/VoiceModelDownload';
 import StudentPortal from './components/portals/StudentPortal';
@@ -38,6 +38,7 @@ export default function App() {
         ttsSpeed: 1.0,
         readingGuide: false,
         lang: 'en',
+        ttsVoice: 'auto',
       };
     } catch {
       return {
@@ -48,6 +49,7 @@ export default function App() {
         ttsSpeed: 1.0,
         readingGuide: false,
         lang: 'en' as const,
+        ttsVoice: 'auto' as const,
       };
     }
   });
@@ -81,6 +83,11 @@ export default function App() {
   useEffect(() => {
     toggleSpeechMute(!config.ttsEnabled);
   }, [config.ttsEnabled]);
+
+  // Sync voice mode preference to the TTS module
+  useEffect(() => {
+    setVoiceMode(config.ttsVoice ?? 'auto');
+  }, [config.ttsVoice]);
 
   // Master Welcome speech narrator greeting (only when TTS is enabled)
   useEffect(() => {

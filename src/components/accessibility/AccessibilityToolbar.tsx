@@ -4,7 +4,7 @@
  */
 
 import { AccessibilityConfig } from '../../types';
-import { Type, Eye, Volume2, VolumeX, Sliders, Heading1, Sparkles } from 'lucide-react';
+import { Type, Eye, Volume2, VolumeX, Sliders, Heading1, Sparkles, Mic } from 'lucide-react';
 import { speakText } from '../../modules/voice/tts';
 import { t } from '../../lib/i18n';
 
@@ -56,6 +56,14 @@ export default function AccessibilityToolbar({ config, onChange }: Accessibility
     const next = !config.readingGuide;
     speakText(next ? t('tts_ruler_on', lang) : t('tts_ruler_off', lang), config.ttsSpeed, true, lang);
     onChange({ ...config, readingGuide: next });
+  };
+
+  const cycleVoice = () => {
+    const modes: AccessibilityConfig['ttsVoice'][] = ['auto', 'cloud', 'wasm', 'browser'];
+    const next = modes[(modes.indexOf(config.ttsVoice ?? 'auto') + 1) % modes.length];
+    const labelKey = `tts_voice_${next}` as Parameters<typeof t>[0];
+    speakText(t(labelKey, lang), config.ttsSpeed, true, lang);
+    onChange({ ...config, ttsVoice: next });
   };
 
   const increaseSpeechSpeed = () => {
@@ -144,6 +152,27 @@ export default function AccessibilityToolbar({ config, onChange }: Accessibility
               className="py-2 px-3.5 rounded-xl font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer bg-white hover:bg-slate-50 border-2 border-[#2D3436] text-gray-700 shadow-[2px_2px_0px_#2D3436] active:translate-x-[1px] active:translate-y-[1px]"
             >
               <span>{t('speed', lang)}: {config.ttsSpeed}x</span>
+            </button>
+          )}
+
+          {/* Voice engine picker (visible only when TTS on) */}
+          {config.ttsEnabled && (
+            <button
+              id="btn-tts-voice"
+              onClick={cycleVoice}
+              title={lang === 'sw' ? 'Badilisha injini ya sauti' : 'Switch voice engine'}
+              className="py-2 px-3.5 rounded-xl font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer bg-white hover:bg-slate-50 border-2 border-[#2D3436] text-gray-700 shadow-[2px_2px_0px_#2D3436] active:translate-x-[1px] active:translate-y-[1px]"
+            >
+              <Mic size={13} className="stroke-[2.5px] text-purple-600" />
+              <span>
+                {lang === 'sw' ? 'Sauti' : 'Voice'}:{' '}
+                <span className="font-extrabold uppercase text-purple-700">
+                  {config.ttsVoice === 'cloud'   ? (lang === 'sw' ? 'Wingu' : 'Cloud')
+                  : config.ttsVoice === 'wasm'   ? 'Piper'
+                  : config.ttsVoice === 'browser' ? (lang === 'sw' ? 'Kivinjari' : 'Browser')
+                  : (lang === 'sw' ? 'Otomatiki' : 'Auto')}
+                </span>
+              </span>
             </button>
           )}
 
