@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Green rounded background -->
+  <rect width="64" height="64" rx="14" fill="#6BCB77"/>
+  <!-- Dark border accent -->
+  <rect width="64" height="64" rx="14" fill="none" stroke="#2D3436" stroke-width="3"/>
+  <!-- Open book -->
+  <g transform="translate(8, 14)">
+    <!-- Left page -->
+    <path d="M24 6 C18 6 10 8 6 12 L6 38 C10 35 18 34 24 34 Z"
+          fill="white" stroke="#2D3436" stroke-width="2" stroke-linejoin="round"/>
+    <!-- Right page -->
+    <path d="M24 6 C30 6 38 8 42 12 L42 38 C38 35 30 34 24 34 Z"
+          fill="#FDFCF0" stroke="#2D3436" stroke-width="2" stroke-linejoin="round"/>
+    <!-- Spine -->
+    <line x1="24" y1="6" x2="24" y2="34" stroke="#2D3436" stroke-width="2"/>
+    <!-- Left page lines -->
+    <line x1="10" y1="16" x2="21" y2="15" stroke="#6BCB77" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="10" y1="21" x2="21" y2="20" stroke="#6BCB77" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="10" y1="26" x2="21" y2="25" stroke="#6BCB77" stroke-width="1.5" stroke-linecap="round"/>
+    <!-- Right page lines -->
+    <line x1="27" y1="15" x2="38" y2="16" stroke="#2D3436" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+    <line x1="27" y1="20" x2="38" y2="21" stroke="#2D3436" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+    <line x1="27" y1="25" x2="38" y2="26" stroke="#2D3436" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+  </g>
+  <!-- Accessibility dot (inclusive design badge) -->
+  <circle cx="50" cy="14" r="8" fill="#FFD93D" stroke="#2D3436" stroke-width="2"/>
+  <circle cx="50" cy="11" r="2" fill="#2D3436"/>
+  <path d="M46 17 Q50 15 54 17" stroke="#2D3436" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+</svg>
